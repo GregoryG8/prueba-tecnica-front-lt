@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title> Prueba Técnica Frontend </q-toolbar-title>
 
-        <q-btn icon="logout" flat round dense />
+        <q-btn icon="logout" flat round dense title="Cerrar sesión" />
       </q-toolbar>
     </q-header>
 
