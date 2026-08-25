@@ -59,12 +59,17 @@
         </q-td>
       </template>
     </q-table>
+    <PaymentFormModal
+      v-model="isModalOpen"
+      :payment-data="selectedPayment"
+    />
   </main>
 </template>
 <script setup lang="ts">
 import { usePayments } from './usePayments';
 import { columns } from './Payments';
 import PaymentFilters from 'src/components/PaymentFilters/PaymentFilters.vue';
+import PaymentFormModal from 'src/components/PaymentFormModal/PaymentFormModal.vue';
 
 const {
   paymentStore,
@@ -73,5 +78,7 @@ const {
   toggleStatus,
   confirmDelete,
   openFormModal,
+  selectedPayment,
+  isModalOpen,
 } = usePayments();
 </script>

@@ -8,6 +8,9 @@ export function usePayments() {
   const currentFilters = ref({ search: '', type: null as string | null });
   const $q = useQuasar();
 
+  const isModalOpen = ref(false);
+  const selectedPayment = ref<PaymentMethod | null>(null);
+
   const handleFilters = (filters: { search: string; type: string | null }) => {
     currentFilters.value = filters;
   };
@@ -43,11 +46,8 @@ export function usePayments() {
   };
 
   const openFormModal = (payment: PaymentMethod | null = null) => {
-    if (payment) {
-      console.log('Abrir modal para editar:', payment);
-    } else {
-      console.log('Abrir modal para crear nuevo');
-    }
+    selectedPayment.value = payment;
+    isModalOpen.value = true;
   };
 
   onMounted(() => {
@@ -61,5 +61,7 @@ export function usePayments() {
     toggleStatus,
     confirmDelete,
     openFormModal,
+    selectedPayment,
+    isModalOpen,
   };
 }
