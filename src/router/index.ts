@@ -18,7 +18,7 @@ import { useAuthStore } from 'src/stores/authStore';
  * with the Router instance.
  */
 
-export default route(function (/* { store, ssrContext } */) {
+export default route(function ({ store }) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : process.env.VUE_ROUTER_MODE === 'history'
@@ -36,9 +36,11 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   // Guard
-  const authStore = useAuthStore();
   Router.beforeEach((to, from, next) => {
-    authStore.checkAuth;
+
+    const authStore = useAuthStore(store);
+
+    authStore.checkAuth();
 
     const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
