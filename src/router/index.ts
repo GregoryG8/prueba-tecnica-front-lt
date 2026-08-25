@@ -7,6 +7,7 @@ import {
 } from 'vue-router';
 
 import routes from './routes';
+import { useAuthStore } from 'src/stores/authStore';
 
 /*
  * If not building with SSR mode, you can
@@ -20,7 +21,9 @@ import routes from './routes';
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
-    : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
+    : process.env.VUE_ROUTER_MODE === 'history'
+    ? createWebHistory
+    : createWebHashHistory;
 
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
@@ -30,6 +33,22 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
+  });
+
+  // Guard
+  const authStore = useAuthStore();
+  Router.beforeEach((to, from, next) => {
+    authStore.checkAuth;
+
+    const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+
+    if (requiresAuth && !authStore.isAuthenticated) {
+      next({ name: 'login' });
+    } else if (to.name === 'login' && authStore.isAuthenticated) {
+      next({ name: 'payments' });
+    } else {
+      next();
+    }
   });
 
   return Router;

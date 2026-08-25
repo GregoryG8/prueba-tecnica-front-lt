@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-toolbar-title> Prueba Técnica Frontend </q-toolbar-title>
 
-        <q-btn icon="logout" flat round dense title="Cerrar sesión" />
+        <q-btn @click="handleLogout" icon="logout" flat round dense title="Cerrar sesión" />
       </q-toolbar>
     </q-header>
 
@@ -15,7 +15,14 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({
-  name: 'MainLayout',
-});
+import { useRouter } from 'vue-router';
+import { useAuthStore } from 'src/stores/authStore';
+
+const router = useRouter();
+const authStore = useAuthStore();
+
+const handleLogout = () => {
+  authStore.logout();
+  router.push({ name: 'login' });
+};
 </script>
